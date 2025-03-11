@@ -8,7 +8,7 @@
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        // Add a calculated property for Age
+        
         public int Age
         {
             get

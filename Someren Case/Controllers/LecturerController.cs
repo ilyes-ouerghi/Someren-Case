@@ -5,7 +5,7 @@ namespace SomerenApp.Controllers
     public class LecturerController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public LecturerController(ApplicationDbContext context)
+        public LecturerController(ApplicationDbContext context) 
         {
             _context = context;
         }
