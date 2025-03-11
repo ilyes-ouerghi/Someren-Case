@@ -10,7 +10,7 @@ namespace SomerenApp.Controllers
             _context = context;
         }
 
-        // Action to display all lecturers
+        // Action to display all lecturersa
         public IActionResult Index()
         {
             var lecturers = _context.Lecturers.ToList();  // Retrieve all lecturers from the database
