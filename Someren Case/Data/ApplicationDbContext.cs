@@ -8,5 +8,6 @@ namespace Someren_Case.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Student> Student { get; set; } // This connects to the Students table
+        
     }
 }
