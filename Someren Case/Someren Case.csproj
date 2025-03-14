@@ -11,4 +11,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Lecturers\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lecturers\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lecturers\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lecturers\Index.cshtml" />
+  </ItemGroup>
+
 </Project>
