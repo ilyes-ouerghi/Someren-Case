@@ -1,27 +1,33 @@
 ﻿@model List<Someren_Case.Models.Room>
 
-<h2>Rooms</h2>
+<h2>Rooms List</h2>
+<a href="@Url.Action("Create", "Rooms")" class="btn btn-primary">Add New Room</a>
 
-<table class="table">
+<table class="table table-bordered mt-3">
     <thead>
         <tr>
-            <th>RoomID</th>
-            <th>FloorNumber</th>
-            <th>NumberOfBeds</th>
+            <th>Room ID</th>
+            <th>Floor Number</th>
+            <th>Number of Beds</th>
             <th>Building</th>
-            <th>RoomType</th>
+            <th>Room Type</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var room in Model)
         {
-            <tr>
-                <td>@room.RoomID</td>
-                <td>@room.FloorNumber</td>
-                <td>@room.NumberOfBeds</td>
-                <td>@room.Building</td>
-                <td>@room.RoomType</td>
-            </tr>
+                <tr>
+                    <td>@room.RoomID</td>
+                    <td>@room.FloorNumber</td>
+                    <td>@room.NumberOfBeds</td>
+                    <td>@room.Building</td>
+                    <td>@room.RoomType</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Rooms", new { id = room.RoomID })" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="@Url.Action("Delete", "Rooms", new { id = room.RoomID })" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
         }
     </tbody>
 </table>
