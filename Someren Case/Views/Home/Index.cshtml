@@ -19,39 +19,43 @@
             margin: 0;
             padding: 0;
         }
+
         .top-menu {
             background-color: #333;
             overflow: hidden;
         }
-        .top-menu a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        .top-menu a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+
+            .top-menu a {
+                float: left;
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+                .top-menu a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+
         .content {
             padding: 20px;
         }
     </style>
 </head>
 <body>
-<div class="top-menu">
-    <a href="@Url.Action("Index", "Home")">Home</a> <!-- Fixed Link -->
-    <a href="@Url.Action("Index", "Students")">Students</a> <!-- Link to Students Controller -->
-    <a href="#teachers">Lecturers</a>
-    <a href="#schedule">Rooms</a>
-    <a href="#activities">Activities</a>
-</div>
+    <div class="top-menu">
+        <a href="@Url.Action("Index", "Home")">Home</a> <!-- Fixed Link -->
+        <a href="@Url.Action("Index", "Rooms")">Rooms</a> <!-- Link to Rooms Controller -->
+        <a href="#students">Students</a>
+        <a href="#teachers">Lecturers</a>
+        <a href="#activities">Activities</a>
+    </div>
 
-<div class="content">
-    <!-- Content for each view will be loaded here -->
-</div>
+    <div class="content">
+        <!-- Content for each view will be loaded here -->
+    </div>
 
 </body>
 </html>
