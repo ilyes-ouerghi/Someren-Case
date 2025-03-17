@@ -8,9 +8,8 @@
 
 <p>Are you sure you want to delete the student <strong>@Model.FirstName @Model.LastName</strong>?</p>
 
-<form method="post" asp-action="Delete">
-    <input type="hidden" name="StudentId" value="@Model.StudentId" />
-
+<form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.StudentId">
+    @Html.AntiForgeryToken() <!-- Include AntiForgery token to prevent CSRF attacks -->
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="@Url.Action("Index", "Student")" class="btn btn-secondary">Cancel</a>
+    <a href="@Url.Action("Index", "Students")" class="btn btn-secondary">Cancel</a>
 </form>
