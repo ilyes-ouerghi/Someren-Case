@@ -6,15 +6,16 @@
 
 <h2>Lecturers</h2>
 
+<a href="@Url.Action("Create", "Lecturers")" class="btn btn-primary mb-3">Add Lecturer</a>
+
 <table class="table">
     <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Age</th>
-
-        </tr>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone Number</th>
+        <th>Age</th>
+    </tr>
     </thead>
     <tbody>
         @foreach (var lecturer in Model)
@@ -23,8 +24,21 @@
                 <td>@lecturer.FirstName</td>
                 <td>@lecturer.LastName</td>
                 <td>@lecturer.PhoneNumber</td>
-                <td>@(DateTime.Now.Year - lecturer.DateOfBirth.Year)</td>
-
+                <td>
+                    @{
+                        var today = DateTime.Today;
+                        var age = today.Year - lecturer.DateOfBirth.Year;
+                        if (lecturer.DateOfBirth > today.AddYears(-age))
+                        {
+                            age--; // Adjust if birthday hasn't occurred yet this year
+                        }
+                    }
+                    @age
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", "Lecturers", new { id = lecturer.LecturerID })" class="btn btn-warning">Edit</a>
+                    <a href="@Url.Action("Delete", "Lecturers", new { id = lecturer.LecturerID })" class="btn btn-danger">Delete</a>
+                </td>
             </tr>
         }
     </tbody>
