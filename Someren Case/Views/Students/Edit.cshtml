@@ -1,0 +1,35 @@
+@model Someren_Case.Models.Student
+
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<h2>Edit Student</h2>
+
+<form method="post" asp-action="Edit">
+    <input type="hidden" asp-for="StudentId" />
+
+    <div class="form-group">
+        <label for="FirstName">First Name</label>
+        <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName" required />
+    </div>
+    <div class="form-group">
+        <label for="LastName">Last Name</label>
+        <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName" required />
+    </div>
+    <div class="form-group">
+        <label for="StudentNumber">Student Number</label>
+        <input type="number" class="form-control" id="StudentNumber" name="StudentNumber" value="@Model.StudentNumber" required />
+    </div>
+    <div class="form-group">
+        <label for="PhoneNumber">Phone Number</label>
+        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" required />
+    </div>
+    <div class="form-group">
+        <label for="Class">Class</label>
+        <input type="text" class="form-control" id="Class" name="Class" value="@Model.Class" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="@Url.Action("Index", "Students")" class="btn btn-secondary">Cancel</a>
+</form>

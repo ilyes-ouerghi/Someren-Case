@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -45,13 +45,13 @@
     </style>
 </head>
 <body>
-    <div class="top-menu">
-        <a href="@Url.Action("Index", "Home")">Home</a> <!-- Fixed Link -->
-        <a href="@Url.Action("Index", "Rooms")">Rooms</a> <!-- Link to Rooms Controller -->
-        <a href="#students">Students</a>
-        <a href="#teachers">Lecturers</a>
-        <a href="#activities">Activities</a>
-    </div>
+<div class="top-menu">
+    <a href="@Url.Action("Index", "Home")">Home</a> <!-- Fixed Link -->
+    <a href="@Url.Action("Index", "Students")">Students</a> <!-- Link to Students Controller -->
+    <a href="#teachers">Lecturers</a>
+    <a href="#rooms">Rooms</a>
+    <a href="#activities">Activities</a>
+</div>
 
     <div class="content">
         <!-- Content for each view will be loaded here -->
