@@ -10,5 +10,7 @@ namespace Someren_Case.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Lecturer> Lecturers { get; set; }
+        public DbSet<Room> Room { get; set; }
+        public DbSet<Student> Student { get; set; }
     }
 }
