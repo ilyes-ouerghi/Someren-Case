@@ -1,0 +1,14 @@
+﻿@model Someren.Models.Room
+
+<h2>Create Room</h2>
+<form asp-action="Create">
+    <label>Floor Number</label>
+    <input asp-for="FloorNumber" required />
+    <label>Number of Beds</label>
+    <input asp-for="NumberOfBeds" required />
+    <label>Building</label>
+    <input asp-for="Building" required />
+    <label>Room Type</label>
+    <input asp-for="RoomType" required />
+    <button type="submit">Create</button>
+</form>
