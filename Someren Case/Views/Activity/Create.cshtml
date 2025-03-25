@@ -1,0 +1,23 @@
+@model Someren_Case.Models.Activity
+
+<h1>Create Activity</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="ActivityName">Activity Name</label>
+        <input type="text" class="form-control" id="ActivityName" name="ActivityName" required />
+    </div>
+    <div class="form-group">
+        <label for="Date">Date</label>
+        <input type="date" class="form-control" id="Date" name="Date" required />
+    </div>
+    <div class="form-group">
+        <label for="StartTime">Start Time</label>
+        <input type="time" class="form-control" id="StartTime" name="StartTime" required />
+    </div>
+    <div class="form-group">
+        <label for="EndTime">End Time</label>
+        <input type="time" class="form-control" id="EndTime" name="EndTime" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Create Activity</button>
+</form>

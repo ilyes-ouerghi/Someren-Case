@@ -1,0 +1,40 @@
+@model Someren_Case.Models.ActivityManagementViewModel
+
+@{
+    ViewData["Title"] = "Remove Participant";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Activity: @Model.Activity.ActivityName</h3>
+<p>Date: @Model.Activity.Date.ToString("yyyy-MM-dd")</p>
+<p>Start Time: @Model.Activity.StartTime.ToString(@"hh\:mm")</p>
+<p>End Time: @Model.Activity.EndTime.ToString(@"hh\:mm")</p>
+
+<h4>Participants:</h4>
+<ul>
+    @foreach (var student in Model.ParticipatingStudents)
+    {
+        <li>
+            @student.FirstName @student.LastName - @student.StudentNumber
+            <form asp-action="RemoveParticipant" asp-route-activityId="@Model.Activity.ActivityID" asp-route-studentId="@student.StudentId" method="post">
+                <button type="submit" class="btn btn-danger">Remove</button>
+            </form>
+        </li>
+    }
+</ul>
+
+<h4>Non-Participants:</h4>
+<ul>
+    @foreach (var student in Model.NonParticipatingStudents)
+    {
+        <li>
+            @student.FirstName @student.LastName - @student.StudentNumber
+            <form asp-action="AddParticipant" asp-route-activityId="@Model.Activity.ActivityID" asp-route-studentId="@student.StudentId" method="post">
+                <button type="submit" class="btn btn-success">Add</button>
+            </form>
+        </li>
+    }
+</ul>
+
+<a href="@Url.Action("Manage", "ActivityParticipants", new { activityId = Model.Activity.ActivityID })" class="btn btn-secondary">Back to Activity</a>
