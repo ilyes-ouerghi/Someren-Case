@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Someren_Case.Models;
 
 namespace Someren_Case.Repositories

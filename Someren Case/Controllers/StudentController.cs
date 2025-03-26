@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Someren_Case.Repositories;
 using Someren_Case.Models;
-using System;
-using System.Collections.Generic;
-
 namespace Someren_Case.Controllers
 {
     public class StudentController : Controller
@@ -33,6 +30,7 @@ namespace Someren_Case.Controllers
             }
             catch (Exception)
             {
+                // Optionally log the error
                 return RedirectToAction("Index");
             }
         }
@@ -50,24 +48,33 @@ namespace Someren_Case.Controllers
         {
             try
             {
-                _studentRepository.Add(student);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    _studentRepository.Add(student);
+                    return RedirectToAction("Index");
+                }
+                return View(student);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Optionally log the exception
                 return View(student);
             }
         }
 
-        // Show the form to edit a student
+        // Show the edit form for a student (GET)
         [HttpGet]
         public IActionResult Edit(int studentId)
         {
-            Student? student = _studentRepository.GetById(studentId);
-            return View(student);
+            Student student = _studentRepository.GetById(studentId);
+            if (student == null)
+            {
+                return NotFound();  // If no student found, return 404
+            }
+            return View(student);  // Passing Student model to the Edit view
         }
 
-        // Update student details
+        // Edit a student (POST)
         [HttpPost]
         public IActionResult Edit(Student student)
         {
@@ -78,38 +85,47 @@ namespace Someren_Case.Controllers
             }
             catch (Exception)
             {
-                return View(student);
+                return View(student);  // Passing Student model to the Edit view if error occurs
             }
+            
         }
-
-        // Show delete confirmation page
+        // Show the delete confirmation page (GET)
         [HttpGet]
-        public IActionResult Delete(int? studentId)
+        public IActionResult Delete(int studentId)
         {
-            if (studentId is null)
+            // Retrieve the student from the database using the studentId
+            var student = _studentRepository.GetById(studentId);
+    
+            if (student == null)
             {
-                return NotFound();
+                return NotFound();  // Return 404 if the student is not found
             }
-            else
-            {
-                Student? student = _studentRepository.GetById((int)studentId);
-                return View(student);
-            }
+
+            return View(student);  // Pass the Student model to the Delete view
         }
 
-        // Delete a student
+// Delete the student (POST)
         [HttpPost]
-        public IActionResult Delete(Student student)
+        [ActionName("Delete")]  // Explicitly name the action as Delete
+        public IActionResult DeleteConfirmed(int studentId)
         {
             try
             {
-                _studentRepository.Delete(student);
-                return RedirectToAction("Index");
+                // Retrieve the student from the database using the studentId
+                var student = _studentRepository.GetById(studentId);
+
+                if (student != null)
+                {
+                    _studentRepository.Delete(student);  // Delete the student from the database
+                }
+
+                return RedirectToAction("Index");  // Redirect to the Index action after deletion
             }
             catch (Exception)
             {
-                return View(student);
+                return RedirectToAction("Index");  // In case of an error, redirect to Index
             }
         }
+
     }
 }

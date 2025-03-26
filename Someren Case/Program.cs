@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Someren_Case.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +10,15 @@ builder.Services.AddControllersWithViews();
 
 // Register the student repository with dependency injection
 string connectionString = configuration.GetConnectionString("dbproject242504");
-builder.Services.AddSingleton<IStudentRepository>(new DbStudentRepository(connectionString));
+
+// Register DbStudentRepository for IStudentRepository as Scoped (one per HTTP request)
+builder.Services.AddScoped<IStudentRepository>(provider => new DbStudentRepository(connectionString));
+
+// Register DbActivityParticipantRepository for IActivityParticipantRepository as Scoped (one per HTTP request)
+builder.Services.AddScoped<IActivityParticipantRepository>(provider => new DbActivityParticipantRepository(connectionString));
+
+// Register DbActivityRepository for IActivityRepository as Scoped (one per HTTP request)
+builder.Services.AddScoped<IActivityRepository>(provider => new DbActivityRepository(connectionString));
 
 var app = builder.Build();
 
