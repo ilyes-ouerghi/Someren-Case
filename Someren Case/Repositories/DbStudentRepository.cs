@@ -12,7 +12,7 @@ namespace Someren_Case.Repositories
             _connectionString = connectionString;
         }
 
-        // Get all students
+       
         public List<Student> GetAll()
         {
             List<Student> students = new List<Student>();
@@ -43,7 +43,7 @@ namespace Someren_Case.Repositories
             return students;
         }
 
-        // Get a student by ID
+       
         public Student? GetById(int studentId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -76,7 +76,7 @@ namespace Someren_Case.Repositories
             return null;
         }
 
-        // Add a new student
+      
         public void Add(Student student)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -97,7 +97,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Update student details
+      
         public void Update(Student student)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -119,7 +119,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Delete a student
+       
         public void Delete(Student student)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -135,7 +135,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Filter students by class
+     
         public List<Student> Filter(string studentClass)
         {
             List<Student> students = new List<Student>();
@@ -170,8 +170,8 @@ namespace Someren_Case.Repositories
             return students;
         }
 
-        // Get students participating in a specific activity
-        public List<Student> GetStudentsInActivity(int activityId)
+       
+        public List<Student> GetStudentsByRoomId(int roomId)
         {
             List<Student> students = new List<Student>();
 
@@ -180,12 +180,12 @@ namespace Someren_Case.Repositories
                 connection.Open();
                 string query = "SELECT s.StudentID, s.StudentNumber, s.FirstName, s.LastName, s.PhoneNumber, s.Class " +
                                "FROM Student s " +
-                               "INNER JOIN ActivityParticipants ap ON s.StudentID = ap.StudentID " +
-                               "WHERE ap.ActivityID = @ActivityID";
+                               "INNER JOIN Share si ON s.StudentID = si.StudentID " +
+                               "WHERE si.RoomID = @RoomID";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ActivityID", activityId);
+                    command.Parameters.AddWithValue("@RoomID", roomId);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -208,36 +208,32 @@ namespace Someren_Case.Repositories
             return students;
         }
 
-        // Get students not participating in a specific activity
-        public List<Student> GetStudentsNotInActivity(int activityId)
+        
+        public List<Student> GetStudentsWithoutRoom()
         {
             List<Student> students = new List<Student>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string query = "SELECT s.StudentID, s.StudentNumber, s.FirstName, s.LastName, s.PhoneNumber, s.Class " +
-                               "FROM Student s " +
-                               "WHERE s.StudentID NOT IN (SELECT StudentID FROM ActivityParticipants WHERE ActivityID = @ActivityID)";
+                string query = "SELECT StudentID, StudentNumber, FirstName, LastName, PhoneNumber, Class " +
+                               "FROM Student " +
+                               "WHERE StudentID NOT IN (SELECT StudentID FROM Share)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    command.Parameters.AddWithValue("@ActivityID", activityId);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        students.Add(new Student
                         {
-                            students.Add(new Student
-                            {
-                                StudentID = reader.GetInt32(0),
-                                StudentNumber = reader.GetString(1),
-                                FirstName = reader.GetString(2),
-                                LastName = reader.GetString(3),
-                                PhoneNumber = reader.GetString(4),
-                                Class = reader.GetString(5)
-                            });
-                        }
+                            StudentID = reader.GetInt32(0),
+                            StudentNumber = reader.GetString(1),
+                            FirstName = reader.GetString(2),
+                            LastName = reader.GetString(3),
+                            PhoneNumber = reader.GetString(4),
+                            Class = reader.GetString(5)
+                        });
                     }
                 }
             }
@@ -245,36 +241,36 @@ namespace Someren_Case.Repositories
             return students;
         }
 
-        // Add a student to a specific activity
-        public void AddParticipant(int activityId, int studentId)
+       
+        public void AssignStudentToRoom(int studentId, int roomId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string query = "INSERT INTO ActivityParticipants (ActivityID, StudentID) VALUES (@ActivityID, @StudentID)";
+                string query = "INSERT INTO Share (StudentID, RoomID) VALUES (@StudentID, @RoomID)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ActivityID", activityId);
                     command.Parameters.AddWithValue("@StudentID", studentId);
+                    command.Parameters.AddWithValue("@RoomID", roomId);
 
                     command.ExecuteNonQuery();
                 }
             }
         }
 
-        // Remove a student from a specific activity
-        public void RemoveParticipant(int activityId, int studentId)
+      
+        public void RemoveStudentFromRoom(int studentId, int roomId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string query = "DELETE FROM ActivityParticipants WHERE ActivityID = @ActivityID AND StudentID = @StudentID";
+                string query = "DELETE FROM Share WHERE StudentID = @StudentID AND RoomID = @RoomID";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ActivityID", activityId);
                     command.Parameters.AddWithValue("@StudentID", studentId);
+                    command.Parameters.AddWithValue("@RoomID", roomId);
 
                     command.ExecuteNonQuery();
                 }

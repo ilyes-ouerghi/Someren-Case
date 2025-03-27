@@ -12,7 +12,7 @@ namespace Someren_Case.Repositories
             _connectionString = connectionString;
         }
 
-        // Get all activities
+       
         public List<Activity> GetAll()
         {
             List<Activity> activities = new List<Activity>();
@@ -42,7 +42,7 @@ namespace Someren_Case.Repositories
             return activities;
         }
 
-        // Get activity by ID
+        
         public Activity GetById(int activityId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -74,7 +74,7 @@ namespace Someren_Case.Repositories
             return null;
         }
 
-        // Add a new activity
+        
         public void Add(Activity activity)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -94,7 +94,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Update activity
+      
         public void Update(Activity activity)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -115,7 +115,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Delete activity
+        
         public void Delete(Activity activity)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -131,7 +131,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Add participant to activity
+       
         public void AddParticipantToActivity(int studentId, int activityId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -148,7 +148,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Remove participant from activity
+        
         public void RemoveParticipantFromActivity(int studentId, int activityId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -165,7 +165,7 @@ namespace Someren_Case.Repositories
             }
         }
 
-        // Get list of students in an activity
+      
         public List<Student> GetStudentsInActivity(int activityId)
         {
             List<Student> students = new List<Student>();

@@ -12,14 +12,14 @@ namespace Someren_Case.Controllers
             _studentRepository = studentRepository;
         }
 
-        // Display all students
+        
         public IActionResult Index()
         {
             List<Student> students = _studentRepository.GetAll();
             return View(students);
         }
 
-        // Search students by class (example filtering)
+       
         [HttpPost]
         public IActionResult Filter(string studentClass)
         {
@@ -30,19 +30,19 @@ namespace Someren_Case.Controllers
             }
             catch (Exception)
             {
-                // Optionally log the error
+                
                 return RedirectToAction("Index");
             }
         }
 
-        // Show the form to add a new student
+       
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // Add a new student to the database
+        
         [HttpPost]
         public IActionResult Create(Student student)
         {
@@ -57,24 +57,24 @@ namespace Someren_Case.Controllers
             }
             catch (Exception ex)
             {
-                // Optionally log the exception
+                
                 return View(student);
             }
         }
 
-        // Show the edit form for a student (GET)
+        
         [HttpGet]
         public IActionResult Edit(int studentId)
         {
             Student student = _studentRepository.GetById(studentId);
             if (student == null)
             {
-                return NotFound();  // If no student found, return 404
+                return NotFound();  
             }
-            return View(student);  // Passing Student model to the Edit view
+            return View(student);  
         }
 
-        // Edit a student (POST)
+        
         [HttpPost]
         public IActionResult Edit(Student student)
         {
@@ -85,45 +85,45 @@ namespace Someren_Case.Controllers
             }
             catch (Exception)
             {
-                return View(student);  // Passing Student model to the Edit view if error occurs
+                return View(student);  
             }
             
         }
-        // Show the delete confirmation page (GET)
+        
         [HttpGet]
         public IActionResult Delete(int studentId)
         {
-            // Retrieve the student from the database using the studentId
+           
             var student = _studentRepository.GetById(studentId);
     
             if (student == null)
             {
-                return NotFound();  // Return 404 if the student is not found
+                return NotFound();  
             }
 
-            return View(student);  // Pass the Student model to the Delete view
+            return View(student);  
         }
 
-// Delete the student (POST)
+
         [HttpPost]
-        [ActionName("Delete")]  // Explicitly name the action as Delete
+        [ActionName("Delete")]  
         public IActionResult DeleteConfirmed(int studentId)
         {
             try
             {
-                // Retrieve the student from the database using the studentId
+                
                 var student = _studentRepository.GetById(studentId);
 
                 if (student != null)
                 {
-                    _studentRepository.Delete(student);  // Delete the student from the database
+                    _studentRepository.Delete(student);  
                 }
 
-                return RedirectToAction("Index");  // Redirect to the Index action after deletion
+                return RedirectToAction("Index");  
             }
             catch (Exception)
             {
-                return RedirectToAction("Index");  // In case of an error, redirect to Index
+                return RedirectToAction("Index"); 
             }
         }
 

@@ -16,14 +16,14 @@ namespace Someren_Case.Controllers
             _activityParticipantRepository = activityParticipantRepository;
         }
 
-        // Get all activities
+       
         public IActionResult Index()
         {
             var activities = _activityRepository.GetAll();
             return View(activities);
         }
 
-        // View details of a specific activity
+        
         public IActionResult Details(int id)
         {
             var activity = _activityRepository.GetById(id);
@@ -34,13 +34,13 @@ namespace Someren_Case.Controllers
             return View(activity);
         }
 
-        // Show the form to create a new activity
+       
         public IActionResult Create()
         {
             return View();
         }
 
-        // Handle the creation of an activity
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Activity activity)
@@ -53,7 +53,7 @@ namespace Someren_Case.Controllers
             return View(activity);
         }
 
-        // Show the form to edit an activity
+       
         public IActionResult Edit(int id)
         {
             var activity = _activityRepository.GetById(id);
@@ -64,7 +64,7 @@ namespace Someren_Case.Controllers
             return View(activity);
         }
 
-        // Handle the updating of an activity
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Activity activity)
@@ -82,7 +82,7 @@ namespace Someren_Case.Controllers
             return View(activity);
         }
 
-        // Show the form to confirm deletion of an activity
+       
         public IActionResult Delete(int id)
         {
             var activity = _activityRepository.GetById(id);
@@ -90,10 +90,10 @@ namespace Someren_Case.Controllers
             {
                 return NotFound();
             }
-            return View(activity);  // Pass the activity to the view
+            return View(activity);  
         }
 
-        // POST: Activity/DeleteConfirmed/{id}
+        
         [HttpPost]
         [ActionName("Delete")]
         public IActionResult DeleteConfirmed(int activityId)
@@ -103,17 +103,17 @@ namespace Someren_Case.Controllers
                 var activity = _activityRepository.GetById(activityId);
                 if (activity != null)
                 {
-                    _activityRepository.Delete(activity);  // Delete the activity
+                    _activityRepository.Delete(activity); 
                 }
                 return RedirectToAction("Index");
             }
             catch (Exception)
             {
-                return RedirectToAction("Index");  // In case of an error, redirect to Index
+                return RedirectToAction("Index");  
             }
         }
 
-        // Manage activity participants
+        
         public IActionResult ManageParticipants(int activityId)
         {
             var activity = _activityRepository.GetById(activityId);
@@ -132,39 +132,39 @@ namespace Someren_Case.Controllers
             return View();
         }
 
-        // Add participant to an activity
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddParticipant(int activityId, int studentId)
         {
             try
             {
-                // Make sure to add participant using your repository method
+                
                 _activityParticipantRepository.AddParticipant(activityId, studentId);
                 return RedirectToAction("ManageParticipants", new { activityId });
             }
             catch (Exception ex)
             {
-                // Log error and inform user
+           
                 ViewBag.ErrorMessage = "There was an error adding the participant.";
                 return View("Error");
             }
         }
 
-        // Remove participant from an activity
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RemoveParticipant(int activityId, int studentId)
         {
             try
             {
-                // Remove participant using the repository method
+                
                 _activityParticipantRepository.RemoveParticipant(activityId, studentId);
                 return RedirectToAction("ManageParticipants", new { activityId });
             }
             catch (Exception ex)
             {
-                // Log error and inform user
+                
                 ViewBag.ErrorMessage = "There was an error removing the participant.";
                 return View("Error");
             }
