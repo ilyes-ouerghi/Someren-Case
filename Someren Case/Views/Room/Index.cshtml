@@ -1,0 +1,39 @@
+@model List<Someren_Case.Models.Room>
+
+<h2>Rooms</h2>
+
+<a asp-action="Create" class="btn btn-success">Create New Room</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Room ID</th>
+        <th>Floor Number</th>
+        <th>Number of Beds</th>
+        <th>Building</th>
+        <th>Room Type</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var room in Model)
+    {
+        <tr>
+            <td>@room.RoomID</td>
+            <td>@room.FloorNumber</td>
+            <td>@room.NumberOfBeds</td>
+            <td>@room.Building</td>
+            <td>@room.RoomType</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@room.RoomID" class="btn btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@room.RoomID" class="btn btn-danger">Delete</a>
+
+                @if (room.RoomType == "For Students") // Check if it's a dormitory
+                {
+                    <a asp-action="ManageDormitory" asp-route-id="@room.RoomID" class="btn btn-info">Manage Students</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

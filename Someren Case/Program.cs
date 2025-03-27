@@ -14,6 +14,9 @@ string connectionString = configuration.GetConnectionString("dbproject242504");
 // Register DbStudentRepository for IStudentRepository as Scoped (one per HTTP request)
 builder.Services.AddScoped<IStudentRepository>(provider => new DbStudentRepository(connectionString));
 
+
+builder.Services.AddScoped<IRoomRepository, DbRoomRepository>();
+
 // Register DbActivityParticipantRepository for IActivityParticipantRepository as Scoped (one per HTTP request)
 builder.Services.AddScoped<IActivityParticipantRepository>(provider => new DbActivityParticipantRepository(connectionString));
 

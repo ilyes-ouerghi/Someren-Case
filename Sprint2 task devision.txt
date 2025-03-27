@@ -1,0 +1,25 @@
+Ilyes Ouerghi tasks:
+1.Created the database in Azure studio.
+2.Invited group members to the GitHub repo.
+3.Created Rooms branch in GitHub repo.
+4.Created Rooms table and columns for database in Azure studio.
+5.Created Rooms page views(Assignment2).
+6.Managed Rooms for Create,Edit,Delete functions,buttons and pages(Assignment3).
+7.Pushed the Rooms solution in their own branch.
+
+Seyed Kian Khatibi tasks:
+1.Created Students table and columns for database in Azure studio.
+2.Created Students branch in GitHub repo.
+3.Connected solutions to the database.
+4.Created Students page views(Assignment2).
+5.Managed Students for Create,Edit,Delete functions,buttons and pages(Assignment3).
+6.Pushed the Students solution in their own branch.
+7.Pulled all solutions and merged them into the master branch.
+
+Andei Avornicesei tasks:
+1.Created Lecturers table and columns for database in Azure studio.
+2.Created Lecturers branch in GitHub repo.
+3.Cerated the top menu bar in home page.
+4.Created Lecturers page views(Assignment2).
+5.Managed Lecturers for Create,Edit,Delete functions,buttons and pages(Assignment3).
+6.Pushed the Lecturers solution in their own branch.
