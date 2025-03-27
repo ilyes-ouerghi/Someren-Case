@@ -1,42 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Someren_Case.Data;  // Ensure this namespace matches where your ApplicationDbContext is located
+﻿using Someren_Case.Repositories;
 
-namespace Someren_Case
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
+builder.Services.AddControllersWithViews();
+
+// Register DbLecturerRepository for ILecturerRepository with dependency injection
+builder.Services.AddScoped<ILecturerRepository>(provider =>
+    new DbLecturerRepository(provider.GetRequiredService<IConfiguration>())); // Inject IConfiguration
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline
+if (!app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-
-            // 🔹 Add the database context with connection string
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
-        }
-    }
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+
+// Default route configuration
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Lecturers}/{action=Index}/{id?}"
+);
+
+app.Run();
