@@ -1,32 +1,26 @@
-﻿using Someren_Case.Repositories;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Someren_Case.Interfaces;
+using Someren_Case.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
-builder.Services.AddControllersWithViews();
+string connectionString = builder.Configuration.GetConnectionString("dbproject242504");
 
-// Register DbLecturerRepository for ILecturerRepository with dependency injection
-builder.Services.AddScoped<ILecturerRepository>(provider =>
-    new DbLecturerRepository(provider.GetRequiredService<IConfiguration>())); // Inject IConfiguration
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ILecturerRepository>(sp => new DbLecturerRepository(connectionString));
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// Default route configuration
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Lecturers}/{action=Index}/{id?}"
+    pattern: "{controller=Lecturer}/{action=Index}/{id?}"
 );
 
 app.Run();

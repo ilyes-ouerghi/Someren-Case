@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Data.SqlClient;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
+using Someren_Case.Interfaces;
 using Someren_Case.Models;
 
 namespace Someren_Case.Repositories
@@ -9,97 +10,113 @@ namespace Someren_Case.Repositories
     {
         private readonly string _connectionString;
 
-        // Constructor to inject IConfiguration and retrieve the connection string
-        public DbLecturerRepository(IConfiguration configuration)
+        public DbLecturerRepository(string connectionString)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = connectionString;
         }
 
         public List<Lecturer> GetAllLecturers()
         {
-            List<Lecturer> lecturers = new List<Lecturer>();
-            using (var connection = new SqlConnection(_connectionString))
+            var lecturers = new List<Lecturer>();
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                connection.Open();
-                var command = new SqlCommand("SELECT * FROM Lecturers", connection);
-                var reader = command.ExecuteReader();
-                while (reader.Read())
+                conn.Open();
+                string sql = "SELECT LecturerID, FirstName, LastName, PhoneNumber, DateOfBirth FROM Lecturer";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    lecturers.Add(new Lecturer
+                    while (reader.Read())
                     {
-                        Id = (int)reader["Id"],
-                        FirstName = reader["FirstName"].ToString(),
-                        LastName = reader["LastName"].ToString(),
-                        PhoneNumber = reader["PhoneNumber"].ToString(),
-                        Age = (int)reader["Age"]
-                    });
+                        lecturers.Add(new Lecturer
+                        {
+                            LecturerID = reader.GetInt32(0),
+                            FirstName = reader.GetString(1),
+                            LastName = reader.GetString(2),
+                            PhoneNumber = reader.GetString(3),
+                            DateOfBirth = reader.GetDateTime(4) // ✅ Fixed Type
+                        });
+                    }
                 }
             }
             return lecturers;
         }
 
+        public Lecturer GetLecturerById(int id)
+        {
+            Lecturer lecturer = null;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT LecturerID, FirstName, LastName, PhoneNumber, DateOfBirth FROM Lecturer WHERE LecturerID = @Id";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            lecturer = new Lecturer
+                            {
+                                LecturerID = reader.GetInt32(0),
+                                FirstName = reader.GetString(1),
+                                LastName = reader.GetString(2),
+                                PhoneNumber = reader.GetString(3),
+                                DateOfBirth = reader.GetDateTime(4) // ✅ Fixed Type
+                            };
+                        }
+                    }
+                }
+            }
+            return lecturer;
+        }
+
         public void AddLecturer(Lecturer lecturer)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                connection.Open();
-                var command = new SqlCommand("INSERT INTO Lecturers (FirstName, LastName, PhoneNumber, Age) VALUES (@FirstName, @LastName, @PhoneNumber, @Age)", connection);
-                command.Parameters.AddWithValue("@FirstName", lecturer.FirstName);
-                command.Parameters.AddWithValue("@LastName", lecturer.LastName);
-                command.Parameters.AddWithValue("@PhoneNumber", lecturer.PhoneNumber);
-                command.Parameters.AddWithValue("@Age", lecturer.Age);
-                command.ExecuteNonQuery();
+                conn.Open();
+                string sql = "INSERT INTO Lecturer (FirstName, LastName, PhoneNumber, DateOfBirth) VALUES (@FirstName, @LastName, @PhoneNumber, @DateOfBirth)";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@FirstName", lecturer.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", lecturer.LastName);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", lecturer.PhoneNumber);
+                    cmd.Parameters.AddWithValue("@DateOfBirth", lecturer.DateOfBirth); // ✅ Ensures DateTime type
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
         public void UpdateLecturer(Lecturer lecturer)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                connection.Open();
-                var command = new SqlCommand("UPDATE Lecturers SET FirstName = @FirstName, LastName = @LastName, PhoneNumber = @PhoneNumber, Age = @Age WHERE Id = @Id", connection);
-                command.Parameters.AddWithValue("@Id", lecturer.Id);
-                command.Parameters.AddWithValue("@FirstName", lecturer.FirstName);
-                command.Parameters.AddWithValue("@LastName", lecturer.LastName);
-                command.Parameters.AddWithValue("@PhoneNumber", lecturer.PhoneNumber);
-                command.Parameters.AddWithValue("@Age", lecturer.Age);
-                command.ExecuteNonQuery();
+                conn.Open();
+                string sql = "UPDATE Lecturer SET FirstName = @FirstName, LastName = @LastName, PhoneNumber = @PhoneNumber, DateOfBirth = @DateOfBirth WHERE LecturerID = @LecturerID";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@FirstName", lecturer.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", lecturer.LastName);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", lecturer.PhoneNumber);
+                    cmd.Parameters.AddWithValue("@DateOfBirth", lecturer.DateOfBirth); // ✅ Ensures DateTime type
+                    cmd.Parameters.AddWithValue("@LecturerID", lecturer.LecturerID);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
         public void DeleteLecturer(int id)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                connection.Open();
-                var command = new SqlCommand("DELETE FROM Lecturers WHERE Id = @Id", connection);
-                command.Parameters.AddWithValue("@Id", id);
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public Lecturer GetLecturerById(int id)
-        {
-            Lecturer lecturer = null;
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var command = new SqlCommand("SELECT * FROM Lecturers WHERE Id = @Id", connection);
-                command.Parameters.AddWithValue("@Id", id);
-                var reader = command.ExecuteReader();
-                if (reader.Read())
+                conn.Open();
+                string sql = "DELETE FROM Lecturer WHERE LecturerID = @Id";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
-                    lecturer = new Lecturer
-                    {
-                        Id = (int)reader["Id"],
-                        FirstName = reader["FirstName"].ToString(),
-                        LastName = reader["LastName"].ToString(),
-                        PhoneNumber = reader["PhoneNumber"].ToString(),
-                        Age = (int)reader["Age"]
-                    };
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.ExecuteNonQuery();
                 }
             }
-            return lecturer;
         }
     }
 }

@@ -2,10 +2,11 @@
 {
     public class Lecturer
     {
-        public int Id { get; set; } // Primary Key
+        public int LecturerID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
-        public int Age { get; set; }
+        public DateTime DateOfBirth { get; set; } // Changed from int to DateTime
     }
 }
+

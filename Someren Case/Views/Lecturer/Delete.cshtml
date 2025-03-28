@@ -1,0 +1,23 @@
+﻿@model Someren_Case.Models.Lecturer
+
+@{
+    ViewData["Title"] = "Delete Lecturer";
+}
+
+<h2>Delete Lecturer</h2>
+
+<p>Are you sure you want to delete this lecturer?</p>
+
+<ul>
+    <li><strong>Lecturer ID:</strong> @Model.LecturerID</li>
+    <li><strong>First Name:</strong> @Model.FirstName</li>
+    <li><strong>Last Name:</strong> @Model.LastName</li>
+    <li><strong>Phone Number:</strong> @Model.PhoneNumber</li>
+    <li><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("yyyy-MM-dd")</li>
+</ul>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="LecturerID" value="@Model.LecturerID" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="@Url.Action("Index", "Lecturer")" class="btn btn-secondary">Cancel</a>
+</form>
