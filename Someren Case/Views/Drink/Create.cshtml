@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Create Drink Order";
+}
+
+<h2>Create Drink Order</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="studentId">Student</label>
+        <select id="studentId" name="studentId" class="form-control">
+            @foreach (var student in ViewBag.Students)
+            {
+                <option value="@student.StudentID">@student.FirstName @student.LastName</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="drinkId">Drink</label>
+        <select id="drinkId" name="drinkId" class="form-control">
+            @foreach (var drink in ViewBag.Drinks)
+            {
+                <option value="@drink.DrinkID">@drink.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="count">Count</label>
+        <input type="number" id="count" name="count" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

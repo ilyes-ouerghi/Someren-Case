@@ -17,7 +17,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ILecturerRepository>(sp => new DbLecturerRepository(connectionString));
 builder.Services.AddScoped<IStudentRepository>(provider => new DbStudentRepository(connectionString));
 builder.Services.AddScoped<IDrinkRepository>(provider => new DbDrinkRepository(connectionString));
-builder.Services.AddScoped<IDrinkOrderRepository>(provider => new DbDrinkOrderRepository(connectionString)); // ✅ ADD this for drink order functionality
 
 var app = builder.Build();
 

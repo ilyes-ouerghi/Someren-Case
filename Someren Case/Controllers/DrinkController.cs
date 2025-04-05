@@ -1,50 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Someren_Case.Interfaces;
 using Someren_Case.Models;
+using Someren_Case.Repositories;
+using System.Collections.Generic;
 
 namespace Someren_Case.Controllers
 {
     public class DrinkController : Controller
     {
         private readonly IDrinkRepository _drinkRepository;
+        private readonly IStudentRepository _studentRepository;
 
-        public DrinkController(IDrinkRepository drinkRepository)
+        public DrinkController(IDrinkRepository drinkRepository, IStudentRepository studentRepository)
         {
             _drinkRepository = drinkRepository;
+            _studentRepository = studentRepository;
         }
 
-        // GET: Drink/ProcessOrder
-        public IActionResult ProcessOrder()
+        [HttpGet]
+        public IActionResult Create()
         {
-            // Get all drinks and students from the repository
             var drinks = _drinkRepository.GetAllDrinks();
-            var students = _drinkRepository.GetAllStudents();
-
-            // Pass them to the view via ViewBag
+            var students = _studentRepository.GetAll();
             ViewBag.Drinks = drinks;
             ViewBag.Students = students;
-
             return View();
         }
 
-        // POST: Drink/ProcessOrder
         [HttpPost]
-        public IActionResult ProcessOrder(int selectedStudentID, int selectedDrinkID, int quantity)
+        public IActionResult Create(int studentId, int drinkId, int count)
         {
-            // Process the order
             var order = new DrinkOrder
             {
-                StudentID = selectedStudentID,
-                DrinkID = selectedDrinkID,
-                Quantity = quantity
+                StudentID = studentId,
+                DrinkID = drinkId,
+                Count = count
             };
             _drinkRepository.AddDrinkOrder(order);
-
-            return RedirectToAction("OrderConfirmation");
+            return RedirectToAction("Confirm");
         }
 
-        // GET: Drink/OrderConfirmation
-        public IActionResult OrderConfirmation()
+        public IActionResult Confirm()
         {
             return View();
         }

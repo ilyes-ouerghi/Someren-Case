@@ -2,10 +2,8 @@
 {
     public class DrinkOrder
     {
-        public int DrinkOrderID { get; set; }
         public int StudentID { get; set; }
         public int DrinkID { get; set; }
-        public int Quantity { get; set; }
-       
+        public int Count { get; set; } // This maps to the Quantity column in OrderTable
     }
 }
