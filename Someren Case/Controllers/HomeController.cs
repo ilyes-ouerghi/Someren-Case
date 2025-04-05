@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Someren_Case.Models;
-using System.Diagnostics;
+
 
 namespace Someren_Case.Controllers
 {
@@ -24,11 +23,9 @@ namespace Someren_Case.Controllers
             return View();
         }
 
-        // Error handling method to display request errors
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            // Using TraceIdentifier directly for the RequestId
             return View(new ErrorViewModel { RequestId = HttpContext.TraceIdentifier });
         }
     }

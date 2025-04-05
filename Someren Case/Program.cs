@@ -1,22 +1,36 @@
-using Microsoft.EntityFrameworkCore;
-using Someren_Case.Data;
+using Someren_Case.Interfaces;
+using Someren_Case.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
+var configuration = builder.Configuration;
+
+
 builder.Services.AddControllersWithViews();
 
-// Register DbContext with SQL Server connection (WITH EnableRetryOnFailure)
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure()
-    )
-);
+
+string connectionString = configuration.GetConnectionString("dbproject242504");
+
+
+builder.Services.AddScoped<IStudentRepository>(provider => new DbStudentRepository(connectionString));
+
+builder.Services.AddScoped<IOrderRepository>(provider => new DbOrderRepository(connectionString));
+
+builder.Services.AddScoped<IDrinkRepository, DbDrinkRepository>();
+builder.Services.AddScoped<ILecturerRepository>(sp => new DbLecturerRepository(connectionString));
+
+builder.Services.AddScoped<IRoomRepository, DbRoomRepository>();
+
+
+builder.Services.AddScoped<IActivityParticipantRepository>(provider => new DbActivityParticipantRepository(connectionString));
+
+
+builder.Services.AddScoped<IActivityRepository>(provider => new DbActivityRepository(connectionString));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -30,6 +44,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

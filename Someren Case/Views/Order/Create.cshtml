@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Create Drink Order";
+}
+
+<h2>Create Drink Order</h2>
+
+<form method="post" action="/Order/Create">
+    <div class="form-group">
+        <label for="StudentID">Student</label>
+        <select id="StudentID" name="StudentID" class="form-control">
+            <option value="">Select a Student</option>
+            @foreach (var student in ViewData["Students"] as List<Someren_Case.Models.Student>)
+            {
+                <option value="@student.StudentID">@student.FirstName</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="DrinkID">Drink</label>
+        <select id="DrinkID" name="DrinkID" class="form-control">
+            <option value="">Select a Drink</option>
+            @foreach (var drink in ViewData["Drinks"] as List<Someren_Case.Models.Drink>)
+            {
+                <option value="@drink.DrinkID">@drink.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Quantity">Quantity</label>
+        <input type="number" id="Quantity" name="Quantity" class="form-control" min="1" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirm Order</button>
+    <a href="@Url.Action("Index", "Drink")" class="btn btn-secondary">Cancel</a>
+</form>

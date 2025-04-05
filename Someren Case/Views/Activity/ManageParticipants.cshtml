@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Manage Activity Participants";
+    var activity = ViewBag.Activity as Someren_Case.Models.Activity;
+}
+
+<h2>@activity.ActivityName - Manage Participants</h2>
+
+<h3>Participants</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Student Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var student in ViewBag.Participants as List<Someren_Case.Models.Student>)
+    {
+        <tr>
+            <td>@student.FirstName @student.LastName</td>
+            <td>
+                <form method="post" action="@Url.Action("RemoveParticipant", "Activity")">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="activityId" value="@activity.ActivityID"/>
+                    <input type="hidden" name="studentId" value="@student.StudentID"/>
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<h3>Non-Participants</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Student Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var student in ViewBag.NonParticipants as List<Someren_Case.Models.Student>)
+    {
+        <tr>
+            <td>@student.FirstName @student.LastName</td>
+            <td>
+                <form method="post" action="@Url.Action("AddParticipant", "Activity")">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="activityId" value="@activity.ActivityID"/>
+                    <input type="hidden" name="studentId" value="@student.StudentID"/>
+                    <button type="submit" class="btn btn-success">Add</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
