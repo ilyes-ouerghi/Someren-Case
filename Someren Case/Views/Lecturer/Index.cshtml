@@ -8,6 +8,7 @@
 
 <a href="@Url.Action("Create", "Lecturer")" class="btn btn-primary mb-3">Add New Lecturer</a>
 
+<
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -15,7 +16,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Phone Number</th>
-            <th>Date of Birth</th>
+            <th>Age</th> <!-- Updated column name -->
             <th>Actions</th>
         </tr>
     </thead>
@@ -27,7 +28,7 @@
                 <td>@lecturer.FirstName</td>
                 <td>@lecturer.LastName</td>
                 <td>@lecturer.PhoneNumber</td>
-                <td>@lecturer.DateOfBirth.ToString("yyyy-MM-dd")</td> <!-- Fix Date Format -->
+                <td>@lecturer.Age</td> <!-- Show calculated Age -->
                 <td>
                     <a href="@Url.Action("Edit", "Lecturer", new { id = lecturer.LecturerID })" class="btn btn-warning">Edit</a>
                     <a href="@Url.Action("Delete", "Lecturer", new { id = lecturer.LecturerID })" class="btn btn-danger">Delete</a>
@@ -36,3 +37,4 @@
         }
     </tbody>
 </table>
+
