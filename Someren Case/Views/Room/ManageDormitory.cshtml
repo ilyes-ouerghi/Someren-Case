@@ -8,6 +8,13 @@
     <h2 class="mb-4">Manage Dormitory: <strong>@Model.Room.RoomID - @Model.Room.RoomType</strong></h2>
 
 
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["Message"]
+        </div>
+    }
+
     <div class="card mb-4">
         <div class="card-header bg-primary text-white">
             <h3>Students in this Dormitory</h3>
@@ -16,7 +23,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Student ID</th>
+                    <th>Student Number</th>
                     <th>Name</th>
                     <th>Actions</th>
                 </tr>
@@ -25,10 +32,12 @@
                 @foreach (var student in Model.StudentsInDorm)
                 {
                     <tr>
-                        <td>@student.StudentID</td>
+                        <td>@student.StudentNumber</td>
                         <td>@student.FirstName</td>
                         <td>
-                            <form method="post" asp-action="RemoveStudentFromDormitory" asp-route-studentId="@student.StudentID" asp-route-roomId="@Model.Room.RoomID" class="d-inline" class="d-inline">
+                            <form method="post" asp-action="RemoveStudentFromDormitory"
+                                  asp-route-studentId="@student.StudentID" asp-route-roomId="@Model.Room.RoomID"
+                                  class="d-inline">
                                 <button type="submit" class="btn btn-danger btn-sm">Remove from Dorm</button>
                             </form>
                         </td>
@@ -39,7 +48,6 @@
         </div>
     </div>
 
-
     <div class="card mb-4">
         <div class="card-header bg-warning text-white">
             <h3>Students Without a Room</h3>
@@ -48,7 +56,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Student ID</th>
+                    <th>Student Number</th>
                     <th>Name</th>
                     <th>Actions</th>
                 </tr>
@@ -57,10 +65,12 @@
                 @foreach (var student in Model.StudentsWithoutRoom)
                 {
                     <tr>
-                        <td>@student.StudentID</td>
+                        <td>@student.StudentNumber</td>
                         <td>@student.FirstName</td>
                         <td>
-                            <form method="post" asp-action="AddStudentToDormitory" asp-route-studentId="@student.StudentID" asp-route-roomId="@Model.Room.RoomID" class="d-inline">
+                            <form method="post" asp-action="AddStudentToDormitory"
+                                  asp-route-studentId="@student.StudentID" asp-route-roomId="@Model.Room.RoomID"
+                                  class="d-inline">
                                 <button type="submit" class="btn btn-success btn-sm">Add to Dorm</button>
                             </form>
                         </td>
@@ -71,7 +81,7 @@
         </div>
     </div>
 
-    <!-- Back Button -->
+   
     <div class="text-center">
         <a href="@Url.Action("Index", "Room")" class="btn btn-secondary btn-lg">Back to Room List</a>
     </div>

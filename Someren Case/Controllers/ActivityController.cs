@@ -139,17 +139,25 @@ namespace Someren_Case.Controllers
         {
             try
             {
-                
+              
                 _activityParticipantRepository.AddParticipant(activityId, studentId);
+
+             
+                TempData["Message"] = "The participant has been successfully added to the activity.";
+
+               
                 return RedirectToAction("ManageParticipants", new { activityId });
             }
             catch (Exception ex)
             {
-           
-                ViewBag.ErrorMessage = "There was an error adding the participant.";
-                return View("Error");
+                
+                TempData["Message"] = "There was an error adding the participant. Please try again.";
+
+             
+                return RedirectToAction("ManageParticipants", new { activityId });
             }
         }
+
 
         
         [HttpPost]
@@ -160,14 +168,23 @@ namespace Someren_Case.Controllers
             {
                 
                 _activityParticipantRepository.RemoveParticipant(activityId, studentId);
+
+                
+                TempData["Message"] = "The participant has been successfully removed from the activity.";
+
+              
                 return RedirectToAction("ManageParticipants", new { activityId });
             }
             catch (Exception ex)
             {
+              
+                TempData["Message"] = "There was an error removing the participant. Please try again.";
+
                 
-                ViewBag.ErrorMessage = "There was an error removing the participant.";
-                return View("Error");
+                return RedirectToAction("ManageParticipants", new { activityId });
             }
         }
+
         }
-    }
+        }
+    

@@ -19,7 +19,7 @@
         </ul>
 
         <form asp-action="Delete" method="post">
-            <input type="hidden" name="LecturerID" value="@Model.LecturerID" />
+            <input type="hidden" name="LecturerID" value="@Model.LecturerID"/>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-danger">Delete</button>
                 <a href="@Url.Action("Index", "Lecturer")" class="btn btn-outline-secondary">Cancel</a>

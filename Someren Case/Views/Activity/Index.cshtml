@@ -6,7 +6,7 @@
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
         <tr>
-            <th>Activity ID</th>
+          
             <th>Activity Name</th>
             <th>Date</th>
             <th>Start Time</th>
@@ -18,15 +18,18 @@
         @foreach (var activity in Model)
         {
             <tr>
-                <td>@activity.ActivityID</td>
+
                 <td>@activity.ActivityName</td>
                 <td>@activity.Date.ToString("yyyy-MM-dd")</td>
                 <td>@activity.StartTime.ToString(@"hh\:mm")</td>
                 <td>@activity.EndTime.ToString(@"hh\:mm")</td>
                 <td>
-                    <a href="@Url.Action("Edit", "Activity", new { id = activity.ActivityID })" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="@Url.Action("Delete", "Activity", new { id = activity.ActivityID })" class="btn btn-danger btn-sm">Delete</a>
-                    <a href="@Url.Action("ManageParticipants", "Activity", new { activityId = activity.ActivityID })" class="btn btn-info btn-sm">Manage Participants</a>
+                    <a href="@Url.Action("Edit", "Activity", new { id = activity.ActivityID })"
+                       class="btn btn-warning btn-sm">Edit</a>
+                    <a href="@Url.Action("Delete", "Activity", new { id = activity.ActivityID })"
+                       class="btn btn-danger btn-sm">Delete</a>
+                    <a href="@Url.Action("ManageParticipants", "Activity", new { activityId = activity.ActivityID })"
+                       class="btn btn-info btn-sm">Manage Participants</a>
                 </td>
             </tr>
         }

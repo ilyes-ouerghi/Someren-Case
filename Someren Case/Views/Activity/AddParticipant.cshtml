@@ -6,10 +6,18 @@
 <h2 class="text-center my-4">Add Participant to @activity.ActivityName</h2>
 
 <div class="container">
+   
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["Message"]
+        </div>
+    }
+
     <h3>Select a Student to Add</h3>
 
     <form method="post" action="@Url.Action("AddParticipant", "Activity")">
-        <input type="hidden" name="activityId" value="@activity.ActivityID" />
+        <input type="hidden" name="activityId" value="@activity.ActivityID"/>
 
         <div class="mb-3">
             <label for="StudentID" class="form-label">Select Student</label>
@@ -28,6 +36,7 @@
     </form>
 
     <div class="text-center mt-4">
-        <a href="@Url.Action("ManageParticipants", "Activity", new { activityId = activity.ActivityID })" class="btn btn-secondary">Back to Manage Participants</a>
+        <a href="@Url.Action("ManageParticipants", "Activity", new { activityId = activity.ActivityID })"
+           class="btn btn-secondary">Back to Manage Participants</a>
     </div>
 </div>

@@ -8,5 +8,7 @@ namespace Someren_Case.Models
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string Class { get; set; }
+        
+
     }
 }

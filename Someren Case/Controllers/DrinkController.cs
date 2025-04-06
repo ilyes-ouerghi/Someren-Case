@@ -12,7 +12,6 @@ namespace Someren_Case.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IStudentRepository _studentRepository;
 
-       
         public DrinkController(IDrinkRepository drinkRepository, IOrderRepository orderRepository, IStudentRepository studentRepository)
         {
             _drinkRepository = drinkRepository;
@@ -20,19 +19,16 @@ namespace Someren_Case.Controllers
             _studentRepository = studentRepository;
         }
 
-        
         public IActionResult Index()
         {
-            // Fetch all drinks
+           
             var drinks = _drinkRepository.GetAllDrinks();
-            // Fetch all orders and students
+           
             var orders = _orderRepository.GetAllOrders();
             var students = _studentRepository.GetAll();
 
-       
             var drinkOrders = new List<DrinkOrderViewModel>();
 
-           
             foreach (var drink in drinks)
             {
                 var ordersForDrink = orders
@@ -50,10 +46,14 @@ namespace Someren_Case.Controllers
                 });
             }
 
+           
+            ViewBag.OrderSuccess = TempData["OrderSuccess"];
+            ViewBag.OrderError = TempData["OrderError"];
+
             return View(drinkOrders);
         }
 
-        // GET: Drink/Details/5
+       
         public IActionResult Details(int id)
         {
             var drink = _drinkRepository.GetDrinkById(id);
@@ -64,13 +64,11 @@ namespace Someren_Case.Controllers
             return View(drink);
         }
 
-       
         public IActionResult Create()
         {
             return View();
         }
 
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Name, Type, VATRate, StockQuantity")] Drink drink)
@@ -78,12 +76,12 @@ namespace Someren_Case.Controllers
             if (ModelState.IsValid)
             {
                 _drinkRepository.AddDrink(drink);
+                TempData["OrderSuccess"] = "Drink successfully created!";
                 return RedirectToAction(nameof(Index));
             }
             return View(drink);
         }
 
-       
         public IActionResult Edit(int id)
         {
             var drink = _drinkRepository.GetDrinkById(id);
@@ -94,7 +92,6 @@ namespace Someren_Case.Controllers
             return View(drink);
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("DrinkID, Name, Type, VATRate, StockQuantity")] Drink drink)
@@ -107,12 +104,12 @@ namespace Someren_Case.Controllers
             if (ModelState.IsValid)
             {
                 _drinkRepository.UpdateDrink(drink);
+                TempData["OrderSuccess"] = "Drink successfully updated!";
                 return RedirectToAction(nameof(Index));
             }
             return View(drink);
         }
 
-       
         public IActionResult Delete(int id)
         {
             var drink = _drinkRepository.GetDrinkById(id);
@@ -124,7 +121,6 @@ namespace Someren_Case.Controllers
             return View(drink); 
         }
 
-        
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -135,12 +131,14 @@ namespace Someren_Case.Controllers
                 var drink = _drinkRepository.GetDrinkById(id);
                 if (drink != null)
                 {
-                    _drinkRepository.DeleteDrink(id); 
+                    _drinkRepository.DeleteDrink(id);
+                    TempData["OrderSuccess"] = "Drink successfully deleted!";
                 }
                 return RedirectToAction("Index");
             }
             catch (Exception)
             {
+                TempData["OrderError"] = "Error occurred while deleting the drink.";
                 return RedirectToAction("Index"); 
             }
         }

@@ -33,6 +33,7 @@ namespace Someren_Case.Controllers
             if (ModelState.IsValid)
             {
                 _roomRepository.AddRoom(room);
+                TempData["Message"] = "Room created successfully!";
                 return RedirectToAction("Index");
             }
             return View(room);
@@ -53,6 +54,7 @@ namespace Someren_Case.Controllers
             if (ModelState.IsValid)
             {
                 _roomRepository.UpdateRoom(room);
+                TempData["Message"] = "Room updated successfully!";
                 return RedirectToAction("Index");
             }
             return View(room);
@@ -71,10 +73,10 @@ namespace Someren_Case.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             _roomRepository.DeleteRoom(id);
+            TempData["Message"] = "Room deleted successfully!";
             return RedirectToAction("Index");
         }
 
-       
         public IActionResult ManageDormitory(int id)
         {
             Room room = _roomRepository.GetRoomById(id);
@@ -97,14 +99,30 @@ namespace Someren_Case.Controllers
         [HttpPost]
         public IActionResult AddStudentToDormitory(int roomId, int studentId)
         {
-            _studentRepository.AssignStudentToRoom(studentId, roomId);
+            try
+            {
+                _studentRepository.AssignStudentToRoom(studentId, roomId);
+                TempData["Message"] = "Student added to dormitory successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "There was an error adding the student to the dormitory.";
+            }
             return RedirectToAction("ManageDormitory", new { id = roomId });
         }
 
         [HttpPost]
         public IActionResult RemoveStudentFromDormitory(int roomId, int studentId)
         {
-            _studentRepository.RemoveStudentFromRoom(studentId, roomId);
+            try
+            {
+                _studentRepository.RemoveStudentFromRoom(studentId, roomId);
+                TempData["Message"] = "Student removed from dormitory successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "There was an error removing the student from the dormitory.";
+            }
             return RedirectToAction("ManageDormitory", new { id = roomId });
         }
     }
