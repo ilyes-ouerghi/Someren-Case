@@ -1,6 +1,6 @@
 @{
     ViewData["Title"] = "Manage Activity Participants";
-    var activity = ViewBag.Activity as Someren_Case.Models.Activity;
+    var activity = ViewBag.Activity as Activity;
 }
 
 <div class="container my-5">
@@ -26,7 +26,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var student in ViewBag.Participants as List<Someren_Case.Models.Student>)
+                @foreach (var student in ViewBag.Participants as List<Student>)
                 {
                     <tr>
                         <td>@student.FirstName @student.LastName</td>
@@ -55,7 +55,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var student in ViewBag.NonParticipants as List<Someren_Case.Models.Student>)
+                @foreach (var student in ViewBag.NonParticipants as List<Student>)
                 {
                     <tr>
                         <td>@student.FirstName @student.LastName</td>

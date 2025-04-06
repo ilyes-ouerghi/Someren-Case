@@ -10,7 +10,7 @@ var configuration = builder.Configuration;
 builder.Services.AddControllersWithViews();
 
 
-string connectionString = configuration.GetConnectionString("dbproject242504");
+var connectionString = configuration.GetConnectionString("dbproject242504");
 
 
 builder.Services.AddScoped<IStudentRepository>(provider => new DbStudentRepository(connectionString));
@@ -23,7 +23,8 @@ builder.Services.AddScoped<ILecturerRepository>(sp => new DbLecturerRepository(c
 builder.Services.AddScoped<IRoomRepository, DbRoomRepository>();
 
 
-builder.Services.AddScoped<IActivityParticipantRepository>(provider => new DbActivityParticipantRepository(connectionString));
+builder.Services.AddScoped<IActivityParticipantRepository>(provider =>
+    new DbActivityParticipantRepository(connectionString));
 
 
 builder.Services.AddScoped<IActivityRepository>(provider => new DbActivityRepository(connectionString));
@@ -43,8 +44,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"
+    "default",
+    "{controller=Home}/{action=Index}/{id?}"
 );
 
 app.Run();

@@ -1,5 +1,6 @@
-using Someren_Case.Models;
 using System.Data.SqlClient;
+using Someren_Case.Models;
+
 namespace Someren_Case.Repositories;
 
 public class DbActivityParticipantRepository : IActivityParticipantRepository
@@ -18,23 +19,21 @@ public class DbActivityParticipantRepository : IActivityParticipantRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             connection.Open();
-            string query = "SELECT s.StudentID, s.FirstName, s.LastName FROM Student s " +
-                           "JOIN Participate ap ON s.StudentID = ap.StudentID " +
-                           "WHERE ap.ActivityID = @ActivityID";
+            var query = "SELECT s.StudentID, s.FirstName, s.LastName FROM Student s " +
+                        "JOIN Participate ap ON s.StudentID = ap.StudentID " +
+                        "WHERE ap.ActivityID = @ActivityID";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ActivityID", activityId);
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
                         students.Add(new Student
                         {
                             StudentID = reader.GetInt32(0),
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2)
                         });
-                    }
                 }
             }
         }
@@ -49,22 +48,20 @@ public class DbActivityParticipantRepository : IActivityParticipantRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             connection.Open();
-            string query = "SELECT s.StudentID, s.FirstName, s.LastName FROM Student s " +
-                           "WHERE s.StudentID NOT IN (SELECT StudentID FROM Participate WHERE ActivityID = @ActivityID)";
+            var query = "SELECT s.StudentID, s.FirstName, s.LastName FROM Student s " +
+                        "WHERE s.StudentID NOT IN (SELECT StudentID FROM Participate WHERE ActivityID = @ActivityID)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ActivityID", activityId);
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
                         students.Add(new Student
                         {
                             StudentID = reader.GetInt32(0),
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2)
                         });
-                    }
                 }
             }
         }
@@ -77,7 +74,7 @@ public class DbActivityParticipantRepository : IActivityParticipantRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             connection.Open();
-            string query = "INSERT INTO Participate (ActivityID, StudentID) VALUES (@ActivityID, @StudentID)";
+            var query = "INSERT INTO Participate (ActivityID, StudentID) VALUES (@ActivityID, @StudentID)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ActivityID", activityId);
@@ -92,7 +89,7 @@ public class DbActivityParticipantRepository : IActivityParticipantRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             connection.Open();
-            string query = "DELETE FROM Participate WHERE ActivityID = @ActivityID AND StudentID = @StudentID";
+            var query = "DELETE FROM Participate WHERE ActivityID = @ActivityID AND StudentID = @StudentID";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ActivityID", activityId);

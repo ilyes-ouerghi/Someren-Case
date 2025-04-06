@@ -1,24 +1,21 @@
-﻿using System;
+﻿namespace Someren_Case.Models;
 
-namespace Someren_Case.Models
+public class Lecturer
 {
-    public class Lecturer
-    {
-        public int LecturerID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PhoneNumber { get; set; }
-        public DateTime DateOfBirth { get; set; }
+    public int LecturerID { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string PhoneNumber { get; set; }
+    public DateTime DateOfBirth { get; set; }
 
-        public int Age
+    public int Age
+    {
+        get
         {
-            get
-            {
-                var today = DateTime.Today;
-                int age = today.Year - DateOfBirth.Year;
-                if (DateOfBirth.Date > today.AddYears(-age)) age--;
-                return age;
-            }
+            var today = DateTime.Today;
+            var age = today.Year - DateOfBirth.Year;
+            if (DateOfBirth.Date > today.AddYears(-age)) age--;
+            return age;
         }
     }
 }

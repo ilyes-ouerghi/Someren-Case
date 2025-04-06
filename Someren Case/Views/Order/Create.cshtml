@@ -25,7 +25,7 @@
             <label for="StudentID" class="form-label">Student</label>
             <select id="StudentID" name="StudentID" class="form-control" required>
                 <option value="">Select a Student</option>
-                @foreach (var student in ViewData["Students"] as List<Someren_Case.Models.Student>)
+                @foreach (var student in ViewData["Students"] as List<Student>)
                 {
                     <option value="@student.StudentID">@student.FirstName</option>
                 }
@@ -36,7 +36,7 @@
             <label for="DrinkID" class="form-label">Drink</label>
             <select id="DrinkID" name="DrinkID" class="form-control" required>
                 <option value="">Select a Drink</option>
-                @foreach (var drink in ViewData["Drinks"] as List<Someren_Case.Models.Drink>)
+                @foreach (var drink in ViewData["Drinks"] as List<Drink>)
                 {
                     <option value="@drink.DrinkID">@drink.Name</option>
                 }

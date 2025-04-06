@@ -1,131 +1,117 @@
 using Microsoft.AspNetCore.Mvc;
-using Someren_Case.Repositories;
 using Someren_Case.Models;
-namespace Someren_Case.Controllers
+using Someren_Case.Repositories;
+
+namespace Someren_Case.Controllers;
+
+public class StudentController : Controller
 {
-    public class StudentController : Controller
+    private readonly IStudentRepository _studentRepository;
+
+    public StudentController(IStudentRepository studentRepository)
     {
-        private readonly IStudentRepository _studentRepository;
+        _studentRepository = studentRepository;
+    }
 
-        public StudentController(IStudentRepository studentRepository)
+
+    public IActionResult Index()
+    {
+        List<Student> students = _studentRepository.GetAll();
+        return View(students);
+    }
+
+
+    [HttpPost]
+    public IActionResult Filter(string studentClass)
+    {
+        try
         {
-            _studentRepository = studentRepository;
+            List<Student> students = _studentRepository.Filter(studentClass);
+            return View("Index", students);
         }
-
-        
-        public IActionResult Index()
+        catch (Exception)
         {
-            List<Student> students = _studentRepository.GetAll();
-            return View(students);
+            return RedirectToAction("Index");
         }
+    }
 
-       
-        [HttpPost]
-        public IActionResult Filter(string studentClass)
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+
+    [HttpPost]
+    public IActionResult Create(Student student)
+    {
+        try
         {
-            try
+            if (ModelState.IsValid)
             {
-                List<Student> students = _studentRepository.Filter(studentClass);
-                return View("Index", students);
-            }
-            catch (Exception)
-            {
-                
+                _studentRepository.Add(student);
                 return RedirectToAction("Index");
             }
-        }
 
-       
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
+            return View(student);
         }
+        catch (Exception ex)
+        {
+            return View(student);
+        }
+    }
 
-        
-        [HttpPost]
-        public IActionResult Create(Student student)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _studentRepository.Add(student);
-                    return RedirectToAction("Index");
-                }
-                return View(student);
-            }
-            catch (Exception ex)
-            {
-                
-                return View(student);
-            }
-        }
 
-        
-        [HttpGet]
-        public IActionResult Edit(int studentId)
-        {
-            Student student = _studentRepository.GetById(studentId);
-            if (student == null)
-            {
-                return NotFound();  
-            }
-            return View(student);  
-        }
+    [HttpGet]
+    public IActionResult Edit(int studentId)
+    {
+        var student = _studentRepository.GetById(studentId);
+        if (student == null) return NotFound();
+        return View(student);
+    }
 
-        
-        [HttpPost]
-        public IActionResult Edit(Student student)
+
+    [HttpPost]
+    public IActionResult Edit(Student student)
+    {
+        try
         {
-            try
-            {
-                _studentRepository.Update(student);
-                return RedirectToAction("Index");
-            }
-            catch (Exception)
-            {
-                return View(student);  
-            }
-            
+            _studentRepository.Update(student);
+            return RedirectToAction("Index");
         }
-        
-        [HttpGet]
-        public IActionResult Delete(int studentId)
+        catch (Exception)
         {
-           
+            return View(student);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult Delete(int studentId)
+    {
+        var student = _studentRepository.GetById(studentId);
+
+        if (student == null) return NotFound();
+
+        return View(student);
+    }
+
+
+    [HttpPost]
+    [ActionName("Delete")]
+    public IActionResult DeleteConfirmed(int studentId)
+    {
+        try
+        {
             var student = _studentRepository.GetById(studentId);
-    
-            if (student == null)
-            {
-                return NotFound();  
-            }
 
-            return View(student);  
+            if (student != null) _studentRepository.Delete(student);
+
+            return RedirectToAction("Index");
         }
-
-
-        [HttpPost]
-        [ActionName("Delete")]  
-        public IActionResult DeleteConfirmed(int studentId)
+        catch (Exception)
         {
-            try
-            {
-                
-                var student = _studentRepository.GetById(studentId);
-
-                if (student != null)
-                {
-                    _studentRepository.Delete(student);  
-                }
-
-                return RedirectToAction("Index");  
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Index"); 
-            }
+            return RedirectToAction("Index");
         }
-
     }
 }
